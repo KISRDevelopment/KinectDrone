@@ -1,6 +1,3 @@
-__author__ = 'aziz'
-
-
 from freenect import sync_get_depth as get_depth #Uses freenect to get depth information from the Kinect
 import numpy as np #Imports NumPy
 import cv,cv2 #Uses both of cv and cv2
