@@ -3,12 +3,6 @@ import numpy as np #Imports NumPy
 import cv,cv2 #Uses both of cv and cv2
 import pygame #Uses pygame
 
-#The libaries below are used for mouse manipulation
-# from Xlib import X, display
-# import Xlib.XK
-# import Xlib.error
-# import Xlib.ext.xtest
-
 constList = lambda length, val: [val for _ in range(length)] #Gives a list of size length filled with the variable val. length is a list and val is dynamic
 
 """
@@ -53,21 +47,6 @@ class BlobAnalysis:
         self.contours = contours
         self.cHullArea = cHullArea
         self.contourArea = contourArea
-
-# d = display.Display() #Display reference for Xlib manipulation
-# def move_mouse(x,y):#Moves the mouse to (x,y). x and y are ints
-#     s = d.screen()
-#     root = s.root
-#     root.warp_pointer(x,y)
-#     d.sync()
-#
-# def click_down(button):#Simulates a down click. Button is an int
-#     Xlib.ext.xtest.fake_input(d,X.ButtonPress, button)
-#     d.sync()
-#
-# def click_up(button): #Simulates a up click. Button is an int
-#     Xlib.ext.xtest.fake_input(d,X.ButtonRelease, button)
-#     d.sync()
 
 """
 The function below is a basic mean filter. It appends a cache list and takes the mean of it.
@@ -137,33 +116,6 @@ def hand_tracker():
         screen.blit(screenFlipped,(0,0)) #Updates the main screen --> screen
         pygame.display.flip() #Updates everything on the window
 
-        #Mouse Try statement
-        try:
-            centroidX = blobData.centroid[0][0]
-            centroidY = blobData.centroid[0][1]
-            if dummy:
-                mousePtr = display.Display().screen().root.query_pointer()._data #Gets current mouse attributes
-                dX = centroidX - strX #Finds the change in X
-                dY = strY - centroidY #Finds the change in Y
-                if abs(dX) > 1: #If there was a change in X greater than 1...
-                    mouseX = mousePtr["root_x"] - 2*dX #New X coordinate of mouse
-                if abs(dY) > 1: #If there was a change in Y greater than 1...
-                    mouseY = mousePtr["root_y"] - 2*dY #New Y coordinate of mouse
-                move_mouse(mouseX,mouseY) #Moves mouse to new location
-                strX = centroidX #Makes the new starting X of mouse to current X of newest centroid
-                strY = centroidY #Makes the new starting Y of mouse to current Y of newest centroid
-                cArea = cacheAppendMean(cHullAreaCache,blobData.cHullArea[0]) #Normalizes (gets rid of noise) in the convex hull area
-                areaRatio = cacheAppendMean(areaRatioCache, blobData.contourArea[0]/cArea) #Normalizes the ratio between the contour area and convex hull area
-                if cArea < 10000 and areaRatio > 0.82: #Defines what a click down is. Area must be small and the hand must look like a binary circle (nearly)
-                    click_down(1)
-                else:
-                    click_up(1)
-            else:
-                strX = centroidX #Initializes the starting X
-                strY = centroidY #Initializes the starting Y
-                dummy = True #Lets the function continue to the first part of the if statement
-        except: #There may be no centroids and therefore blobData.centroid[0] will be out of range
-            dummy = False #Waits for a new starting point
 
         for e in pygame.event.get(): #Itertates through current events
             if e.type is pygame.QUIT: #If the close button is pressed, the while loop ends
