@@ -102,8 +102,8 @@ def hand_tracker():
         screen.fill(BLACK) #Make the window black
         (depth,_) = get_depth() #Get the depth from the kinect
         depth = depth.astype(np.float32) #Convert the depth to a 32 bit float
-        _,depthThresh = cv2.threshold(depth, 600, 255, cv2.THRESH_BINARY_INV) #Threshold the depth for a binary image. Thresholded at 600 arbitary units
-        _,back = cv2.threshold(depth, 900, 255, cv2.THRESH_BINARY_INV) #Threshold the background in order to have an outlined background and segmented foreground
+        _,depthThresh = cv2.threshold(depth, 750, 255, cv2.THRESH_BINARY_INV) #Threshold the depth for a binary image. Thresholded at 600 arbitary units
+        _,back = cv2.threshold(depth, 1000, 255, cv2.THRESH_BINARY_INV) #Threshold the background in order to have an outlined background and segmented foreground
         blobData = BlobAnalysis(depthThresh) #Creates blobData object using BlobAnalysis class
         blobDataBack = BlobAnalysis(back) #Creates blobDataBack object using BlobAnalysis class
 
@@ -115,7 +115,7 @@ def hand_tracker():
             pygame.draw.lines(screen,RED,True,blobData.cHull[i],3) #Draws the convex hull for each blob
             pygame.draw.lines(screen,GREEN,True,blobData.contours[i],3) #Draws the contour of each blob
             try:
-                print("Centroid data is {}".format(blobData.centroid[i]))
+                print(depth[blobData.centroid[i][1]][blobData.centroid[i][0]])
             except:
                 pass
         """
