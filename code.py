@@ -89,6 +89,7 @@ WHITE = (255,255,255)
 YELLOW = (255,255,0)
 
 def hand_tracker():
+    ControlVector = 2*[3*[0]]
     (depth,_) = get_depth()
     centroidList = list() #Initiate centroid list
     #RGB Color tuples
@@ -114,10 +115,21 @@ def hand_tracker():
             centroidList.append(blobData.centroid[i]) #Adds the centroid tuple to the centroidList --> used for drawing
             pygame.draw.lines(screen,RED,True,blobData.cHull[i],3) #Draws the convex hull for each blob
             pygame.draw.lines(screen,GREEN,True,blobData.contours[i],3) #Draws the contour of each blob
-            try:
+            """try:
                 print(depth[blobData.centroid[i][1]][blobData.centroid[i][0]])
             except:
-                pass
+                pass"""
+        try:
+            ControlVector[0][0] = blobData.centroid[0][1]
+            ControlVector[0][1] = blobData.centroid[0][0]
+            ControlVector[0][2] = depth[ControlVector[0][0]][ControlVector[0][1]]
+            ControlVector[1][0] = blobData.centroid[1][1]
+            ControlVector[1][1] = blobData.centroid[1][0]
+            ControlVector[1][2] = depth[ControlVector[1][0]][ControlVector[1][1]]
+        
+            print(ControlVector)
+        except:
+            pass
         """
         #Drawing Loop
         #This draws on the screen lines from the centroids
