@@ -67,7 +67,7 @@ class ARDrone(object):
         self.image = ""
         self.navdata = dict()
         self.time = 0
-	self.controlVector = [0 0 0 0]
+	self.controlVector = [0,0,0,0]
 
     def takeoff(self):
         """Make the drone takeoff."""
@@ -117,7 +117,7 @@ class ARDrone(object):
 
     def vector_move(self):
 	"""Move according to a motion vector."""
-	self.at(at_pcmd, True, controlVector[0], controlVector[1], controlVector[2], controlVector[3])
+	self.at(at_pcmd, True, self.controlVector[0], self.controlVector[1], self.controlVector[2], self.controlVector[3])
 
     def reset(self):
         """Toggle the drone's emergency state."""
