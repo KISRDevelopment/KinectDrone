@@ -1,7 +1,5 @@
 import python_ardrone.libardrone as libardrone
 
-drone = libardrone.ARDrone()
-
 def main():
     drone = libardrone.ARDrone()
     drone.takeoff()
@@ -17,7 +15,7 @@ def main():
 	"""Set quitting signal"""
 	quit = 0
 
-	
+
 	"""Set the ControlVector"""
 	drone.controlVector = [roll, pitch, 0, yaw]
 	drone.vector_move()
