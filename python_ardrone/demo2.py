@@ -31,11 +31,12 @@ stream.
 import pygame
 
 import libardrone
-
+import re # let's get them babe
 from .kinect_socket import Kinect_sock
 
-def parse_data(d):
-    return (d,d)
+def parser(data):
+    regex = re.compile(r'\x02(-?\d+\.\d+),(-?\d+\.\d+)\x03')
+    return [(float(i[0]),float(i[1])) for i in regex.findall(data)]
 
 def main():
     pygame.init()
@@ -49,7 +50,7 @@ def main():
     while running:
         data = client.recv(128)
         if data:
-            pitch, roll = parse_data(data)
+            pr_list = parser(data)
         else:
             continue
         for event in pygame.event.get():
